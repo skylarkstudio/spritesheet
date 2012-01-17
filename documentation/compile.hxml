@@ -1,0 +1,7 @@
+-swf all.swf
+--no-output
+-xml ../haxedoc.xml
+-cp ../
+-lib hxJson2
+-lib nme
+ImportAll

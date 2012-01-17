@@ -1,0 +1,14 @@
+`target NME`
+`extension xml`
+<!--
+`header`
+-->
+
+<spritesheet name="`exportName`" path="`exportName`.png">
+	`assets`
+	<behavior name="`assetName`" referencePoint="`assetReferenceX`,`assetReferenceX`" frameRate="`assetFrameRate`" loop="`assetLoopParam`">
+		`assetFrames`
+		`frameTextureRectX`,`frameTextureRectY`,`frameTextureRectWidth`,`frameTextureRectHeight`,`frameSpriteColorRectX`,`frameSpriteColorRectY``endAssetFrames;`
+	</behavior>
+	`endAssets`
+</spritesheet>

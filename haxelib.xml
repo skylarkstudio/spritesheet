@@ -1,0 +1,7 @@
+<project name="spritesheet" url="http://www.joshuagranick.com" license="BSD">
+    <user name="elyon"/>
+    <tag v="flash"/>
+    <tag v="cpp"/>
+    <description>SpriteSheet is a useful and flexible sprite sheet library compatible with NME</description>
+    <version name="1.05">Added documentation</version>
+</project>
