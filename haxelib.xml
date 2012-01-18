@@ -3,5 +3,5 @@
     <tag v="flash"/>
     <tag v="cpp"/>
     <description>SpriteSheet is a useful and flexible sprite sheet library compatible with NME</description>
-    <version name="1.06">Fixed license</version>
+    <version name="1.07">Updated Zoe importer</version>
 </project>
