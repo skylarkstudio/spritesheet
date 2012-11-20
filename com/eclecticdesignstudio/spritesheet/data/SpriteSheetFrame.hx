@@ -9,7 +9,7 @@ import flash.display.BitmapData;
  * @author Joshua Granick
  */
 
-class SpriteSheetFrame {
+class SpritesheetFrame {
 	
 	
 	public var bitmapData:BitmapData;

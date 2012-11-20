@@ -2,10 +2,8 @@ package com.eclecticdesignstudio.spritesheet;
 
 
 import com.eclecticdesignstudio.spritesheet.data.BehaviorData;
-import com.eclecticdesignstudio.spritesheet.data.SpriteSheetFrame;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
-import flash.display.PixelSnapping;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
@@ -23,7 +21,7 @@ class AnimatedSprite extends Sprite {
 	public var currentBehavior:BehaviorData;
 	public var currentFrameIndex:Int;
 	public var smoothing:Bool;
-	public var spriteSheet:SpriteSheet;
+	public var spritesheet:Spritesheet;
 	
 	private var behaviorComplete:Bool;
 	private var behaviorQueue:Array <String>;
@@ -32,12 +30,12 @@ class AnimatedSprite extends Sprite {
 	private var timeElapsed:Int;
 	
 
-	public function new (spriteSheet:SpriteSheet, smoothing:Bool = false) {
+	public function new (spritesheet:Spritesheet, smoothing:Bool = false) {
 		
 		super ();
 		
 		this.smoothing = smoothing;
-		this.spriteSheet = spriteSheet;
+		this.spritesheet = spritesheet;
 		
 		bitmap = new Bitmap ();
 		addChild (bitmap);
@@ -88,7 +86,7 @@ class AnimatedSprite extends Sprite {
 			
 			timeElapsed += deltaTime;
 			
-			var ratio:Float = timeElapsed / loopTime;
+			var ratio = timeElapsed / loopTime;
 			
 			if (ratio >= 1) {
 				
@@ -106,7 +104,7 @@ class AnimatedSprite extends Sprite {
 			}
 			
 			currentFrameIndex = Math.round (ratio * (behavior.frames.length - 1));
-			var frame = spriteSheet.getFrame (behavior.frames [currentFrameIndex]);
+			var frame = spritesheet.getFrame (behavior.frames [currentFrameIndex]);
 			
 			bitmap.bitmapData = frame.bitmapData;
 			bitmap.smoothing = smoothing;
@@ -134,7 +132,7 @@ class AnimatedSprite extends Sprite {
 	
 	private function updateBehavior (name:String, allowRestart:Bool = true):Void {
 		
-		behavior = spriteSheet.behaviors.get (name);
+		behavior = spritesheet.behaviors.get (name);
 		
 		if (behavior != null) {
 			

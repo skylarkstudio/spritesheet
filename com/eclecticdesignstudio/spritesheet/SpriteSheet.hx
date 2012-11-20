@@ -2,7 +2,7 @@ package com.eclecticdesignstudio.spritesheet;
 
 
 import com.eclecticdesignstudio.spritesheet.data.BehaviorData;
-import com.eclecticdesignstudio.spritesheet.data.SpriteSheetFrame;
+import com.eclecticdesignstudio.spritesheet.data.SpritesheetFrame;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -13,23 +13,23 @@ import flash.geom.Rectangle;
  * @author Joshua Granick
  */
 
-class SpriteSheet {
+class Spritesheet {
 	
 	
 	public var behaviors:Hash <BehaviorData>;
 	public var name:String;
 	public var totalFrames:Int;
 	
-	private var frames:Array <SpriteSheetFrame>;
+	private var frames:Array <SpritesheetFrame>;
 	private var sourceImage:BitmapData;
 	private var sourceImageAlpha:BitmapData;
 	
 	
-	public function new (frames:Array <SpriteSheetFrame> = null, behaviors:Hash <BehaviorData> = null) {
+	public function new (frames:Array <SpritesheetFrame> = null, behaviors:Hash <BehaviorData> = null) {
 		
 		if (frames == null) {
 			
-			this.frames = new Array <SpriteSheetFrame> ();
+			this.frames = new Array <SpritesheetFrame> ();
 			totalFrames = 0;
 			
 		} else {
@@ -59,7 +59,7 @@ class SpriteSheet {
 	}
 	
 	
-	public function addFrame (frame:SpriteSheetFrame):Void {
+	public function addFrame (frame:SpritesheetFrame):Void {
 		
 		frames.push (frame);
 		totalFrames ++;
@@ -80,11 +80,11 @@ class SpriteSheet {
 	
 	public function generateBitmap (index:Int):Void {
 		
-		var frame:SpriteSheetFrame = frames[index];
+		var frame = frames[index];
 		
-		var bitmapData:BitmapData = new BitmapData (frame.width, frame.height, true);
-		var sourceRectangle:Rectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
-		var targetPoint:Point = new Point ();
+		var bitmapData = new BitmapData (frame.width, frame.height, true);
+		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
+		var targetPoint = new Point ();
 		
 		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
 		
@@ -99,9 +99,9 @@ class SpriteSheet {
 	}
 	
 	
-	public function getFrame (index:Int, autoGenerate:Bool = true):SpriteSheetFrame {
+	public function getFrame (index:Int, autoGenerate:Bool = true):SpritesheetFrame {
 		
-		var frame:SpriteSheetFrame = frames[index];
+		var frame = frames[index];
 		
 		if (frame != null && frame.bitmapData == null && autoGenerate) {
 			
