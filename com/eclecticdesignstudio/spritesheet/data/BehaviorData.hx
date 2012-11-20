@@ -43,7 +43,7 @@ class BehaviorData {
 	
 	public function clone (name:String):BehaviorData {
 		
-		return new BehaviorData (name, frames, loop, frameRate, originX, originY);
+		return new BehaviorData (name, frames.copy (), loop, frameRate, originX, originY);
 		
 	}
 	
