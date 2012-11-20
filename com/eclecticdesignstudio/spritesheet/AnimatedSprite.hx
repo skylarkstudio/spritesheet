@@ -36,6 +36,7 @@ class AnimatedSprite extends Sprite {
 		
 		super ();
 		
+		this.smoothing = smoothing;
 		this.spriteSheet = spriteSheet;
 		
 		bitmap = new Bitmap ();
@@ -124,7 +125,7 @@ class AnimatedSprite extends Sprite {
 			}
 			
 			currentFrameIndex = Math.round (ratio * (behavior.frames.length - 1));
-			var frame:SpriteSheetFrame = spriteSheet.getFrame (behavior.frames [currentFrameIndex]);
+			var frame = spriteSheet.getFrame (behavior.frames [currentFrameIndex]);
 			
 			bitmap.bitmapData = frame.bitmapData;
 			bitmap.smoothing = smoothing;
