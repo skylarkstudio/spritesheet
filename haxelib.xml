@@ -3,5 +3,5 @@
     <tag v="flash"/>
     <tag v="cpp"/>
     <description>SpriteSheet is a useful and flexible sprite sheet library compatible with NME</description>
-    <version name="1.08">Add bitmap smoothing and flag to not restart the same behavior</version>
+    <version name="1.09">Small fixes and improvements</version>
 </project>

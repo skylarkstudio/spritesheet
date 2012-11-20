@@ -62,28 +62,9 @@ class AnimatedSprite extends Sprite {
 	
 	public function showBehavior (name:String, allowRestart:Bool = true):Void {
 		
-		behavior = spriteSheet.behaviors.get (name);
+		behaviorQueue = null;
 		
-		if (behavior != null) {
-			
-			if (allowRestart || behavior != currentBehavior) {
-				
-				currentBehavior = behavior;
-				timeElapsed = 0;
-				behaviorComplete = false;
-				
-				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
-				
-			}
-			
-		} else {
-			
-			bitmap.bitmapData = null;
-			currentBehavior = null;
-			currentFrameIndex = -1;
-			behaviorComplete = true;
-			
-		}
+		updateBehavior (name, allowRestart);
 		
 	}
 	
@@ -94,7 +75,7 @@ class AnimatedSprite extends Sprite {
 		
 		if (behaviorQueue != null && behaviorQueue.length > 0) {
 			
-			showBehavior (behaviorQueue.shift ());
+			updateBehavior (behaviorQueue.shift ());
 			
 		}
 		
@@ -145,6 +126,34 @@ class AnimatedSprite extends Sprite {
 				}		
 				
 			}
+			
+		}
+		
+	}
+	
+	
+	private function updateBehavior (name:String, allowRestart:Bool = true):Void {
+		
+		behavior = spriteSheet.behaviors.get (name);
+		
+		if (behavior != null) {
+			
+			if (allowRestart || behavior != currentBehavior) {
+				
+				currentBehavior = behavior;
+				timeElapsed = 0;
+				behaviorComplete = false;
+				
+				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
+				
+			}
+			
+		} else {
+			
+			bitmap.bitmapData = null;
+			currentBehavior = null;
+			currentFrameIndex = -1;
+			behaviorComplete = true;
 			
 		}
 		
