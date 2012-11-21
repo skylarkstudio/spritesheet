@@ -1,7 +1,7 @@
-<project name="spritesheet" url="http://www.joshuagranick.com" license="MIT">
+<project name="spritesheet" url="http://github.com/jgranick/spritesheet" license="MIT">
     <user name="elyon"/>
     <tag v="flash"/>
     <tag v="cpp"/>
     <description>SpriteSheet is a useful and flexible sprite sheet library compatible with NME</description>
-    <version name="1.09">Small fixes and improvements</version>
+    <version name="1.10">Many improvements to make the library more pleasurable to use</version>
 </project>

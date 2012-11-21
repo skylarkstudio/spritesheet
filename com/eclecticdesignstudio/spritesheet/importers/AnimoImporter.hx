@@ -66,9 +66,8 @@ class AnimoImporter {
 		
 		var spriteSheetNodeFast = new Fast (spriteSheetNode);
 		
-		var spriteSheet = new Spritesheet (frames, behaviors);
+		var spriteSheet = new Spritesheet (Assets.getBitmapData (assetDirectory + "/" + spriteSheetNodeFast.att.path), frames, behaviors);
 		spriteSheet.name = spriteSheetNodeFast.att.name;
-		spriteSheet.setImage (Assets.getBitmapData (assetDirectory + "/" + spriteSheetNodeFast.att.path));
 		
 		return spriteSheet;
 		

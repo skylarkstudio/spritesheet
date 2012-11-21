@@ -112,9 +112,8 @@ class ZoeImporter {
 			}
 		}
 		
-		var spritesheet = new Spritesheet (frames, behaviors);
+		var spritesheet = new Spritesheet (Assets.getBitmapData(assetDirectory + "/" + json.images[0]), frames, behaviors);
 		spritesheet.name = spritesheetName;
-		spritesheet.setImage (Assets.getBitmapData(assetDirectory + "/" + json.images[0]));
 		
 		return spritesheet;
 		

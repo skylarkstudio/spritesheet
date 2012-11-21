@@ -24,7 +24,7 @@ class AnimatedSprite extends Sprite {
 	public var spritesheet:Spritesheet;
 	
 	private var behaviorComplete:Bool;
-	private var behaviorQueue:Array <String>;
+	private var behaviorQueue:Array <BehaviorData>;
 	private var behavior:BehaviorData;
 	private var loopTime:Int;
 	private var timeElapsed:Int;
@@ -37,6 +37,7 @@ class AnimatedSprite extends Sprite {
 		this.smoothing = smoothing;
 		this.spritesheet = spritesheet;
 		
+		behaviorQueue = new Array <BehaviorData> ();
 		bitmap = new Bitmap ();
 		addChild (bitmap);
 		
@@ -45,7 +46,7 @@ class AnimatedSprite extends Sprite {
 	
 	public function getFrameData (index:Int):Dynamic {
 		
-		if (currentBehavior != null) {
+		if (currentBehavior != null && currentBehavior.frameData.length > index) {
 			
 			return currentBehavior.frameData[index];
 			
@@ -58,20 +59,64 @@ class AnimatedSprite extends Sprite {
 	}
 	
 	
-	public function showBehavior (name:String, allowRestart:Bool = true):Void {
+	public function queueBehavior (behavior:Dynamic):Void {
 		
-		behaviorQueue = null;
+		var behaviorData = resolveBehavior (behavior);
 		
-		updateBehavior (name, allowRestart);
+		if (currentBehavior == null) {
+			
+			updateBehavior (behaviorData);
+			
+		} else {
+			
+			behaviorQueue.push (behaviorData);
+			
+		}
 		
 	}
 	
 	
-	public function showBehaviors (names:Array <String>):Void {
+	private function resolveBehavior (behavior:Dynamic):BehaviorData {
 		
-		behaviorQueue = names;
+		if (Std.is (behavior, BehaviorData)) {
+			
+			return cast behavior;
+			
+		} else if (Std.is (behavior, String)) {
+			
+			if (spritesheet != null) {
+				
+				return spritesheet.behaviors.get (cast behavior);
+				
+			}
+			
+		}
 		
-		if (behaviorQueue != null && behaviorQueue.length > 0) {
+		return null;
+		
+	}
+	
+	
+	public function showBehavior (behavior:Dynamic, restart:Bool = true):Void {
+		
+		behaviorQueue = new Array <BehaviorData> ();
+		
+		updateBehavior (resolveBehavior (behavior), restart);
+		
+	}
+	
+	
+	public function showBehaviors (behaviors:Array <Dynamic>):Void {
+		
+		behaviorQueue = new Array <BehaviorData> ();
+		
+		for (behavior in behaviors) {
+			
+			behaviorQueue.push (resolveBehavior (behavior));
+			
+		}
+		
+		if (behaviorQueue.length > 0) {
 			
 			updateBehavior (behaviorQueue.shift ());
 			
@@ -90,7 +135,7 @@ class AnimatedSprite extends Sprite {
 			
 			if (ratio >= 1) {
 				
-				if (behavior.loop) {
+				if (currentBehavior.loop) {
 					
 					ratio -= Math.floor (ratio);
 					
@@ -103,19 +148,19 @@ class AnimatedSprite extends Sprite {
 				
 			}
 			
-			currentFrameIndex = Math.round (ratio * (behavior.frames.length - 1));
-			var frame = spritesheet.getFrame (behavior.frames [currentFrameIndex]);
+			currentFrameIndex = Math.round (ratio * (currentBehavior.frames.length - 1));
+			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 			
 			bitmap.bitmapData = frame.bitmapData;
 			bitmap.smoothing = smoothing;
-			bitmap.x = frame.offsetX - behavior.originX;
-			bitmap.y = frame.offsetY - behavior.originY;
+			bitmap.x = frame.offsetX - currentBehavior.originX;
+			bitmap.y = frame.offsetY - currentBehavior.originY;
 			
 			if (behaviorComplete) {
 				
-				if (behaviorQueue != null && behaviorQueue.length > 0) {
+				if (behaviorQueue.length > 0) {
 					
-					showBehavior (behaviorQueue.shift ());
+					updateBehavior (behaviorQueue.shift ());
 					
 				} else if (hasEventListener (Event.COMPLETE)) {
 					
@@ -130,19 +175,23 @@ class AnimatedSprite extends Sprite {
 	}
 	
 	
-	private function updateBehavior (name:String, allowRestart:Bool = true):Void {
-		
-		behavior = spritesheet.behaviors.get (name);
+	private function updateBehavior (behavior:BehaviorData, restart:Bool = true):Void {
 		
 		if (behavior != null) {
 			
-			if (allowRestart || behavior != currentBehavior) {
+			if (restart || behavior != currentBehavior) {
 				
 				currentBehavior = behavior;
 				timeElapsed = 0;
 				behaviorComplete = false;
 				
 				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
+				
+				if (bitmap.bitmapData == null) {
+					
+					update (0);
+					
+				}
 				
 			}
 			

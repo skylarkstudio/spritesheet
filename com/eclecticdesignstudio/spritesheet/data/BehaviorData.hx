@@ -20,8 +20,22 @@ class BehaviorData {
 	public var originX:Float;
 	public var originY:Float;
 	
+	private static var uniqueID:Int = 0;
 	
-	public function new (name:String, frames:Array <Int>, loop:Bool = false, frameRate:Int = 30, originX:Float = 0, originY:Float = 0) {
+	
+	public function new (name:String = "", frames:Array <Int> = null, loop:Bool = false, frameRate:Int = 30, originX:Float = 0, originY:Float = 0) {
+		
+		if (name == "") {
+			
+			name = "behavior" + (uniqueID++);
+			
+		}
+		
+		if (frames == null) {
+			
+			frames = [];
+			
+		}
 		
 		this.name = name;
 		this.frames = frames;
@@ -41,9 +55,9 @@ class BehaviorData {
 	}
 	
 	
-	public function clone (name:String):BehaviorData {
+	public function clone ():BehaviorData {
 		
-		return new BehaviorData (name, frames.copy (), loop, frameRate, originX, originY);
+		return new BehaviorData ("behavior" + (uniqueID++), frames.copy (), loop, frameRate, originX, originY);
 		
 	}
 	

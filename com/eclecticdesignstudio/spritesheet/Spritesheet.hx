@@ -25,7 +25,10 @@ class Spritesheet {
 	private var sourceImageAlpha:BitmapData;
 	
 	
-	public function new (frames:Array <SpritesheetFrame> = null, behaviors:Hash <BehaviorData> = null) {
+	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Hash <BehaviorData> = null, imageAlpha:BitmapData = null) {
+		
+		this.sourceImage = image;
+		this.sourceImageAlpha = imageAlpha;
 		
 		if (frames == null) {
 			
@@ -114,10 +117,90 @@ class Spritesheet {
 	}
 	
 	
-	public function setImage (image:BitmapData, imageAlpha:BitmapData = null):Void {
+	public function getFrameIDs ():Array <Int> {
+		
+		var ids = [];
+		
+		for (i in 0...totalFrames) {
+			
+			ids.push (i);
+			
+		}
+		
+		return ids;
+		
+	}
+	
+	
+	public function getFrames ():Array <SpritesheetFrame> {
+		
+		return frames.copy ();
+		
+	}
+	
+	
+	public function merge (spritesheet:Spritesheet):Array <Int> {
+		
+		var cacheTotalFrames = totalFrames;
+		
+		for (i in 0...spritesheet.frames.length) {
+			
+			if (spritesheet.frames[i].bitmapData == null) {
+				
+				spritesheet.generateBitmap (i);
+				
+			}
+			
+			addFrame (spritesheet.frames[i]);
+			
+		}
+		
+		for (behavior in spritesheet.behaviors) {
+			
+			if (!behaviors.exists (behavior.name)) {
+				
+				var clone = behavior.clone ();
+				clone.name = behavior.name;
+				
+				for (i in 0...behavior.frames.length) {
+					
+					behavior.frames[i] += cacheTotalFrames;
+					
+				}
+				
+				addBehavior (behavior);
+				
+			}
+			
+		}
+		
+		var ids = [];
+		
+		for (i in cacheTotalFrames...totalFrames) {
+			
+			ids.push (i);
+			
+		}
+		
+		return ids;
+		
+	}
+	
+	
+	public function updateImage (image:BitmapData, imageAlpha:BitmapData = null):Void {
 		
 		sourceImage = image;
 		sourceImageAlpha = imageAlpha;
+		
+		for (frame in frames) {
+			
+			if (frame.bitmapData != null) {
+				
+				frame.bitmapData = null;
+				
+			}
+			
+		}
 		
 	}
 	
