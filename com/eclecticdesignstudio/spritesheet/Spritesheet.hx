@@ -145,7 +145,7 @@ class Spritesheet {
 		
 		for (i in 0...spritesheet.frames.length) {
 			
-			if (spritesheet.frames[i].bitmapData == null) {
+			if (spritesheet.frames[i].bitmapData == null && (spritesheet.sourceImage != sourceImage || spritesheet.sourceImageAlpha != sourceImageAlpha)) {
 				
 				spritesheet.generateBitmap (i);
 				
