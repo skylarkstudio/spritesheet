@@ -31,7 +31,7 @@ class ZoeImporter {
 		
 		for (image in cast (json.images, Array <Dynamic>)) {
 			
-			images.push (new Bitmap (Assets.getBitmapData (assetDirectory + "/" + images)));
+			images.push (new Bitmap (Assets.getBitmapData (assetDirectory + "/" + image)));
 			
 		}
 		
