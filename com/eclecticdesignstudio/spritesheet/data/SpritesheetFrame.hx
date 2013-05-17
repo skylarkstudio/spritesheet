@@ -11,7 +11,7 @@ import flash.display.BitmapData;
 
 class SpritesheetFrame {
 	
-	
+	public var name:String;
 	public var bitmapData:BitmapData;
 	public var height:Int;
 	public var offsetX:Int;
