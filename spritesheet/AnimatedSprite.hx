@@ -25,12 +25,12 @@ class AnimatedSprite extends Sprite {
 	private var timeElapsed:Int;
 	
 
-	public function new (spritesheet:Spritesheet, smoothing:Bool = false) {
+	public function new (sheet:Spritesheet, smoothing:Bool = false) {
 		
 		super ();
 		
 		this.smoothing = smoothing;
-		this.spritesheet = spritesheet;
+		this.spritesheet = sheet;
 		
 		behaviorQueue = new Array <BehaviorData> ();
 		bitmap = new Bitmap ();
