@@ -1,22 +1,17 @@
-package com.eclecticdesignstudio.spritesheet;
+package spritesheet;
 
 
-import com.eclecticdesignstudio.spritesheet.data.BehaviorData;
-import com.eclecticdesignstudio.spritesheet.data.SpritesheetFrame;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import spritesheet.data.BehaviorData;
+import spritesheet.data.SpritesheetFrame;
 
-
-/**
- * ...
- * @author Joshua Granick
- */
 
 class Spritesheet {
 	
 	
-	public var behaviors:Hash <BehaviorData>;
+	public var behaviors:Map <String, BehaviorData>;
 	public var name:String;
 	public var totalFrames:Int;
 	
@@ -25,7 +20,7 @@ class Spritesheet {
 	private var sourceImageAlpha:BitmapData;
 	
 	
-	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Hash <BehaviorData> = null, imageAlpha:BitmapData = null) {
+	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
 		
 		this.sourceImage = image;
 		this.sourceImageAlpha = imageAlpha;
@@ -44,7 +39,7 @@ class Spritesheet {
 		
 		if (behaviors == null) {
 			
-			this.behaviors = new Hash <BehaviorData> ();
+			this.behaviors = new Map <String, BehaviorData> ();
 			
 		} else {
 			
@@ -115,7 +110,7 @@ class Spritesheet {
 		return frame;
 		
 	}
-	
+
 	public function getFrameByName(frameName:String, autoGenerate:Bool = true):SpritesheetFrame {
 
 		var frameIndex:Int = 0;
@@ -139,6 +134,7 @@ class Spritesheet {
 
 		return frame;
 	}
+	
 	
 	public function getFrameIDs ():Array <Int> {
 		

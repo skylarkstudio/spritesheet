@@ -1,0 +1,11 @@
+{
+  "name": "spritesheet",
+  "url": "http://github.com/jgranick/spritesheet",
+  "license": "MIT",
+  "tags": [],
+  "description": "Spritesheet is a useful and flexible sprite sheet library compatible with OpenFL",
+  "version": "1.2.0",
+  "releasenote": "Update for Haxe 3",
+  "contributors": [ "singmajesty" ],
+  "dependencies": {}
+}

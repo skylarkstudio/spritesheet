@@ -1,12 +1,12 @@
-package com.eclecticdesignstudio.spritesheet.importers;
+package spritesheet.importers;
 
 
-import com.eclecticdesignstudio.spritesheet.data.BehaviorData;
-import com.eclecticdesignstudio.spritesheet.data.SpritesheetFrame;
-import com.eclecticdesignstudio.spritesheet.Spritesheet;
 import flash.geom.Point;
 import haxe.xml.Fast;
-import nme.Assets;
+import openfl.Assets;
+import spritesheet.data.BehaviorData;
+import spritesheet.data.SpritesheetFrame;
+import spritesheet.Spritesheet;
 
 
 /**
@@ -30,8 +30,8 @@ class SparrowImporter {
 	public static function parse (data:String, assetDirectory:String = ""):Spritesheet {
 		
 		var frames = new Array ();
-		var behaviors = new Hash ();
-		var frameIndex = new Hash ();
+		var behaviors = new Map <String, BehaviorData> ();
+		var frameIndex = new Map <String, Int> ();
 		
 		var xml = Xml.parse (data);
 		var spriteSheetNode = xml.firstElement();
