@@ -110,30 +110,6 @@ class Spritesheet {
 		return frame;
 		
 	}
-
-	public function getFrameByName(frameName:String, autoGenerate:Bool = true):SpritesheetFrame {
-
-		var frameIndex:Int = 0;
-		var frame:SpritesheetFrame = null;
-
-		for (index in 0...totalFrames) {
-
-			if (frames[index].name==frameName) {
-				frameIndex = index;
-				frame = frames[index];
-				break;
-			}
-
-		}
-
-		if (frame != null && frame.bitmapData == null && autoGenerate) {
-			
-			generateBitmap (frameIndex);
-			
-		}
-
-		return frame;
-	}
 	
 	
 	public function getFrameIDs ():Array <Int> {

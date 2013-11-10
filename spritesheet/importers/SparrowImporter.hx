@@ -47,18 +47,11 @@ class SparrowImporter {
 				Std.parseInt (behaviorNodeFast.att.x), 
 				Std.parseInt (behaviorNodeFast.att.y), 
 				Std.parseInt (behaviorNodeFast.att.width), 
-				Std.parseInt (behaviorNodeFast.att.height)
+				Std.parseInt (behaviorNodeFast.att.height), 
+				Std.parseInt (behaviorNodeFast.att.frameX) * -1, 
+				Std.parseInt (behaviorNodeFast.att.frameY) * -1
 			);
 			
-			if (behaviorNodeFast.has.name)
-				frame.name = behaviorNodeFast.att.name;
-
-			if (behaviorNodeFast.has.frameX)
-			{
-				frame.offsetX = Std.parseInt (behaviorNodeFast.att.frameX) * -1;
-				frame.offsetY = Std.parseInt (behaviorNodeFast.att.frameY) * -1;
-			}
-
 			frameIndex.set (behaviorNodeFast.att.name, i);
 			frames.push (frame);
 			
