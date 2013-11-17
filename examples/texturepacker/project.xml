@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Texturepacker" package="com.example.texturepacker" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="Texturepacker" />
+	
+	<source path="Source" />
+
+    <haxelib name="openfl" />
+    <haxelib name="spritesheet" />
+
+	<assets path="Assets" rename="assets" exclude="kit.svg" />
+	<icon path="Assets/kit.svg" />
+	
+</project>
