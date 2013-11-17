@@ -1,0 +1,90 @@
+## C++
+-cmd openfl test cpp
+
+--next
+
+## Flash 9+
+-main TestMain
+-lib munit
+-lib hamcrest
+-lib mlib
+-lib openfl
+-D web
+
+-cp test
+-swf-version 11
+-swf build/as3_test.swf
+
+-cmd openfl build html5
+
+--next
+
+## JavaScript
+#-main TestMain
+#-lib munit
+#-lib mlib
+#-lib hamcrest
+#-lib openfl
+#-lib openfl-html5
+#-lib format
+#-D html5
+#-D web
+#-D html
+#--remap flash:flash
+
+#-cp test
+#-js build/js_test.js
+#-js build/html5/bin/Validation.js
+
+-cmd openfl build html5
+-js build/html5/bin/Spritesheet.js
+--no-output
+#-cmd cp build/html5/bin/Validation.js build/js_test.js
+
+--next
+
+## Neko
+#-cmd cp ~/Development/Haxe/nme/ndll/Linux64/* build
+
+#-main TestMain
+#-lib munit
+#-lib mlib
+#-lib hamcrest
+#-lib openfl
+#-lib openfl-native
+#--remap flash:flash
+#
+#-cp test
+#-D HXCPP_M64=1
+#-D linux
+#-D desktop
+#-neko build/neko_test.n
+#-neko build/linux64/neko/bin/Validation.n
+#-cmd openfl build neko
+#-neko build/linux64/neko/bin/Validation.n
+#--no-output
+-cmd openfl test neko
+
+#--next
+
+## CPP
+#-main TestMain
+#-lib munit
+#-lib mlib
+#-lib hamcrest
+#-lib openfl
+#-lib openfl-native
+#--remap flash:flash
+
+#-cp test
+#-D HXCPP_M64=1
+#-D linux
+#-D desktop
+#-cpp build/cpp_test
+
+#-cmd openfl build cpp
+
+#-cmd mv build/linux64/cpp/bin/Validation build/linux64/cpp/bin/TestMain
+#-cpp build/linux64/cpp/bin
+
+#--no-output
