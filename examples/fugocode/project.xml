@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Fugocode" package="com.example.fugocode" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="Fugocode" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+    <haxelib name="spritesheet" />
+
+	<assets path="Assets" rename="assets" exclude="kit.svg" />
+	<icon path="Assets/kit.svg" />
+	
+</project>
