@@ -12,6 +12,7 @@ class RenderTilesheetToGraphics implements IRenderTarget {
 		this.tilesheet = tilesheet;
 	}	
     public function drawFrame(frame : SpritesheetFrame, offsetX : Float , offsetY : Float, smoothing : Bool) {
+	    graphics.clear();
         tilesheet.drawTiles(graphics, [offsetX + frame.offsetX,offsetY + frame.offsetY, frame.tilesheetIndex], smoothing);
     }
 }

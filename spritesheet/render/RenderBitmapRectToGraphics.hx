@@ -11,6 +11,7 @@ class RenderBitmapRectToGraphics implements IRenderTarget {
     public function drawFrame(frame : SpritesheetFrame, offsetX : Float, offsetY : Float, smoothing : Bool) {
         var m = new flash.geom.Matrix();
         m.translate(offsetX + frame.offsetX - frame.x, offsetY + frame.offsetY - frame.y);
+	    graphics.clear();
         graphics.beginBitmapFill(frame.bitmapData, m, false, smoothing);
         graphics.drawRect(offsetX + frame.offsetX,offsetY + frame.offsetY,frame.width, frame.height);
         graphics.endFill();
