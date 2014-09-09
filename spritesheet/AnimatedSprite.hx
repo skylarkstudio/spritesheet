@@ -1,7 +1,7 @@
 package spritesheet;
 
 
-import flash.display.Bitmap;
+import spritesheet.render.IRenderTarget;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -9,10 +9,11 @@ import flash.Lib;
 import spritesheet.data.BehaviorData;
 
 
+@:access(spritesheet.Spritesheet)
 class AnimatedSprite extends Sprite {
 	
 	
-	public var bitmap:Bitmap;
+	public var renderTarget:IRenderTarget;
 	public var currentBehavior:BehaviorData;
 	public var currentFrameIndex:Int;
 	public var smoothing:Bool;
@@ -23,6 +24,8 @@ class AnimatedSprite extends Sprite {
 	private var behavior:BehaviorData;
 	private var loopTime:Int;
 	private var timeElapsed:Int;
+
+	private var isAFrameShown : Bool = false; //Inidicates if any frame has been drawn at all
 	
 
 	public function new (sheet:Spritesheet, smoothing:Bool = false) {
@@ -33,9 +36,16 @@ class AnimatedSprite extends Sprite {
 		this.spritesheet = sheet;
 		
 		behaviorQueue = new Array <BehaviorData> ();
-		bitmap = new Bitmap ();
-		addChild (bitmap);
-		
+		renderTarget = switch(sheet.imageData) {
+			case BITMAP_DATA(_,_):
+			if (sheet.useSingleBitmapData) {
+				new spritesheet.render.RenderBitmapRectToGraphics (graphics);
+			} else {
+				new spritesheet.render.RenderWholeBitmapToGraphics (graphics);
+			}
+			case TILESHEET(ts):
+			new spritesheet.render.RenderTilesheetToGraphics(graphics, ts);
+		}
 	}
 	
 	
@@ -156,12 +166,9 @@ class AnimatedSprite extends Sprite {
 			
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 			
-			
-			bitmap.bitmapData = frame.bitmapData;
-			bitmap.smoothing = smoothing;
-			bitmap.x = frame.offsetX - currentBehavior.originX;
-			bitmap.y = frame.offsetY - currentBehavior.originY;
-			
+			isAFrameShown = true;
+			renderTarget.drawFrame(frame, -currentBehavior.originX, -currentBehavior.originY, smoothing);
+
 			if (behaviorComplete) {
 				
 				if (behaviorQueue.length > 0) {
@@ -193,7 +200,7 @@ class AnimatedSprite extends Sprite {
 				
 				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
 				
-				if (bitmap.bitmapData == null) {
+				if (!isAFrameShown) {
 					
 					update (0);
 					
@@ -203,7 +210,7 @@ class AnimatedSprite extends Sprite {
 			
 		} else {
 			
-			bitmap.bitmapData = null;
+			isAFrameShown = false;
 			currentBehavior = null;
 			currentFrameIndex = -1;
 			behaviorComplete = true;
