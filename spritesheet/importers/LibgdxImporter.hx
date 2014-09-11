@@ -70,8 +70,6 @@ class LibgdxImporter {
         var frame:GdxFrame = new GdxFrame();
         frame.filename = name;
         frame.rotate = (options.get("rotate").toLowerCase() == "true")?true:false;
-        trace(frame.filename);
-        trace(frame.rotate);
         frame.xy = parseGdxPos(options.get("xy"));
         frame.size = parseGdxSize(options.get("size"));
         frame.orig = parseGdxSize(options.get("orig"));
