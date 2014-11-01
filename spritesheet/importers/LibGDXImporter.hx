@@ -69,7 +69,7 @@ class LibGDXImporter {
 				
 			}
 			
-			if (isIgnoredBehavior (key) {
+			if (isIgnoredBehavior (key)) {
 				
 				continue;
 				
