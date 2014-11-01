@@ -8,6 +8,7 @@ class SpritesheetFrame {
 	
 	
 	public var name:String;
+	public var tilesheetIndex:Int;//Used when drawing this frame from a tilesheet
 	public var bitmapData:BitmapData;
 	public var height:Int;
 	public var offsetX:Int;

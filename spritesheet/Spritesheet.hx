@@ -2,11 +2,16 @@ package spritesheet;
 
 
 import flash.display.BitmapData;
+import openfl.display.Tilesheet;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import spritesheet.data.BehaviorData;
 import spritesheet.data.SpritesheetFrame;
 
+enum ImageData {
+  BITMAP_DATA(sourceImage : BitmapData, sourceImageAlpha : BitmapData);
+  TILESHEET(sheet : openfl.display.Tilesheet); 
+}
 
 class Spritesheet {
 	
@@ -16,14 +21,21 @@ class Spritesheet {
 	public var totalFrames:Int;
 	
 	private var frames:Array <SpritesheetFrame>;
+	private var imageData : ImageData;
 	private var sourceImage:BitmapData;
 	private var sourceImageAlpha:BitmapData;
+	public var useSingleBitmapData(default,null):Bool;
 	
-	
-	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
+	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null,
+						 imageAlpha:BitmapData = null, useSingleBitmapData : Bool = false, useTileSheet : Bool = false) {
 		
-		this.sourceImage = image;
-		this.sourceImageAlpha = imageAlpha;
+		if (useTileSheet) {
+			this.imageData = TILESHEET(new Tilesheet(image));
+			this.useSingleBitmapData = true;
+		} else {
+			this.imageData = BITMAP_DATA(image, imageAlpha);
+			this.useSingleBitmapData = useSingleBitmapData;
+		}
 		
 		if (frames == null) {
 			
@@ -45,6 +57,12 @@ class Spritesheet {
 			
 			this.behaviors = behaviors;
 			
+		}
+
+		if (useSingleBitmapData && imageAlpha != null) {
+			var targetRect = new Rectangle(0,0,image.width,image.height);
+			var targetPoint = new Point();
+			image.copyChannel (imageAlpha, targetRect, targetPoint, 2, 8);
 		}
 		
 	}
@@ -80,20 +98,25 @@ class Spritesheet {
 		
 		var frame = frames[index];
 		
-		var bitmapData = new BitmapData (frame.width, frame.height, true);
 		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
 		var targetPoint = new Point ();
 		
-		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
-		
-		if (sourceImageAlpha != null) {
-			
-			bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
-			
+		switch(imageData) {
+			case BITMAP_DATA(sourceImage, sourceImageAlpha):
+			if (useSingleBitmapData) {
+				frame.bitmapData = sourceImage;
+			} else {
+				var bitmapData = new BitmapData (frame.width, frame.height, true);
+				bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
+
+				if (sourceImageAlpha != null) {
+					bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+				}
+				frame.bitmapData = bitmapData;
+			}
+			case TILESHEET(sheet):
+			frame.tilesheetIndex = sheet.addTileRect(sourceRectangle, new Point(0,0));
 		}
-		
-		frame.bitmapData = bitmapData;
-		
 	}
 	
 	
