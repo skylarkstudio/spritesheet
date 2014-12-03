@@ -61,7 +61,7 @@ class LibGDXImporter {
 			for (i in 0...frames.length) {
 				
 				var gdxFrame = frames[i];
-				var sFrame = new SpritesheetFrame (gdxFrame.xy.x, gdxFrame.xy.y, gdxFrame.size.w, gdxFrame.size.h, gdxFrame.offset.x, gdxFrame.orig.h - gdxFrame.size.h - gdxFrame.offset.y);
+				var sFrame = new SpritesheetFrame (gdxFrame.xy.x, gdxFrame.xy.y, gdxFrame.size.w, gdxFrame.size.h, gdxFrame.offset.x, gdxFrame.orig.h - gdxFrame.size.h - gdxFrame.offset.y, gdxFrame.orig.w, gdxFrame.orig.h);
 				sFrame.name = gdxFrame.filename;
 				
 				indexes.push (allFrames.length);
