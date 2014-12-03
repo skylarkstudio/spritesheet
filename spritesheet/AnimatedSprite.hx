@@ -17,6 +17,9 @@ class AnimatedSprite extends Sprite {
 	public var currentFrameIndex:Int;
 	public var smoothing:Bool;
 	public var spritesheet:Spritesheet;
+
+	public var currentFrameOrigWidth(default,null):Int=0;
+	public var currentFrameOrigHeight(default,null):Int=0;
 	
 	private var behaviorComplete:Bool;
 	private var behaviorQueue:Array <BehaviorData>;
@@ -156,6 +159,9 @@ class AnimatedSprite extends Sprite {
 			
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 			
+			// Set frame data
+			currentFrameOrigWidth = frame.origWidth;
+			currentFrameOrigHeight = frame.origHeight;
 			
 			bitmap.bitmapData = frame.bitmapData;
 			bitmap.smoothing = smoothing;

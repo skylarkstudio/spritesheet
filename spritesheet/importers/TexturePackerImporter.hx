@@ -100,7 +100,7 @@ class TexturePackerImporter {
             for (i in 0...frames.length) {
 
                 var tpFrame:TPFrame = frames[i];
-                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h );
+                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h, tpFrame.sourceSize.w, tpFrame.sourceSize.h );
 
                 if( tpFrame.trimmed )
                 {
