@@ -28,7 +28,9 @@ class ZoeImporter {
 		
 		var json = Json.parse (data);
 		var images = [];
-		
+
+		var framerate = Std.int (json.framerate);
+
 		for (image in cast (json.images, Array <Dynamic>)) {
 			
 			images.push (new Bitmap (Assets.getBitmapData (assetDirectory + "/" + image)));
@@ -73,7 +75,8 @@ class ZoeImporter {
 			var state = Reflect.field (json.animations, key);
 			var behaviorFrames = new Array <Int> ();
 			var frames = Reflect.field (state, "frames");
-			
+			var speed = Reflect.field (state, "speed");
+
 			if (frames == null) {
 				
 				//there must be a more elegant way of doing this...
@@ -92,9 +95,11 @@ class ZoeImporter {
 				
 			}
 			
+			var cFramerate = Math.round(framerate * speed);
+			
 			//var origin = new Point (frames[state.start].x, frames[state.start].y);
 			//var behavior = new BehaviorData (key, behaviorFrames, true, 30, origin.x, origin.y);
-			var behavior = new BehaviorData (key, behaviorFrames, true, 30, 0, 0);
+			var behavior = new BehaviorData (key, behaviorFrames, false, cFramerate, 0, 0);
 			behaviors.set (behavior.name, behavior);
 			
 		}
