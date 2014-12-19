@@ -1,7 +1,31 @@
-# Fugo Spritesheet Example
+# ZoeImporter Spritesheet Example
 
-A simple example of how to use the haxe spritesheet library based.  
-The example only cover the usage of Bitmap Spritesheet with OpenFL.
+This example is based on Infinite's code
+[texturepacker example](https://github.com/jgranick/spritesheet/tree/master/examples/texturepacker)
 
-* Artwork from opengameart.org [link](http://opengameart.org/content/kit-the-firefox-mascot)
+* Artwork is from opengameart.org [link](http://opengameart.org/content/kit-the-firefox-mascot)
+
+## Zoe
+
+If Flash is still your favourite animation tool, you should use [ZoeImporter](https://github.com/jgranick/spritesheet/blob/master/spritesheet/importers/ZoeImporter.hx) to create spritesheets.
+
+You will need [Zoe](http://www.createjs.com/#!/Zoe) 
+
+>
+ZOË   
+An AIR application for exporting SWF animations as EaselJS spritesheets for use in Canvas and CSS. Maintain frame labels, reuse similar frames, and more!
+>
+
+![image](zoe.png)
+
+## Flash
+
+And create an animation on the timeline with labels
+
+![image](flash.png)
+
+Export the animation to `.swf` and open that file into Zoe.
+
+Fiddle with the settings in Zoe and export the spritesheet with json.
+
 

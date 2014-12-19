@@ -39,11 +39,12 @@ class Main extends Sprite
 
 	public function setupSpritsheet():Void
 	{
-		//Load Spritesheet Source
+		// Load Spritesheet Source (json file)
 		var json = Assets.getText("assets/kit.json");
 
 		var spritesheet:Spritesheet = ZoeImporter.parse(json, 'assets');
 
+		// default the behaviour don't loop
 		spritesheet.loopBehavior('walk');
 		spritesheet.loopBehavior('idle');
 
