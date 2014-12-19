@@ -116,8 +116,8 @@ class Main extends Sprite
 			trace("ko");
 		}
 		if (e.keyCode == Keyboard.NUMBER_0) {
-			animated.showBehaviors(["walk","jump","hit","punch"]);
-			trace("walk,jump,hit,punch");
+			animated.showBehaviors(["walk","jump","hit","punch","idle"]);
+			trace("walk,jump,hit,punch,idle");
 		}
 	}
 
