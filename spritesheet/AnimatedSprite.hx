@@ -130,7 +130,7 @@ class AnimatedSprite extends Sprite {
 			
 			if (ratio >= 1) {
 				
-				if (currentBehavior.loop) {
+				if (currentBehavior.loop && behaviorQueue.length == 0 ) {
 					
 					ratio -= Math.floor (ratio);
 					
