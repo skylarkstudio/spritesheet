@@ -56,7 +56,20 @@ class Spritesheet {
 		
 	}
 	
-	
+	/**
+	 * added for ZoeImporter, loop of the animation is default false 
+	 * @param  name 	BehaviorData name set by ZoeImporter
+	 */
+	public function loopBehavior (name:String):Void {
+		
+		if(this.behaviors.exists(cast name)){		
+			var behavior : BehaviorData = this.behaviors.get (cast name);
+			behavior.loop = true;
+		}
+
+	}
+
+
 	public function addFrame (frame:SpritesheetFrame):Void {
 		
 		frames.push (frame);
