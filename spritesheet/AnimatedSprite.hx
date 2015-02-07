@@ -134,27 +134,22 @@ class AnimatedSprite extends Sprite {
 		}
 		
 	}
-	
-	
+
 	public function update (deltaTime:Int):Void {
 		
 		if (!behaviorComplete) {
 			
 			timeElapsed += deltaTime;
 			
-			var ratio = timeElapsed / loopTime;
-			
-			if (ratio >= 1) {
+			if (timeElapsed >= loopTime) {
 				
 				if (currentBehavior.loop) {
-					
-					ratio -= Math.floor (ratio);
-					
+				  timeElapsed -= loopTime;
 				} else {
-					
+
 					behaviorComplete = true;
-					ratio = 1;
-					
+					timeElapsed = loopTime-1; //Stop time
+
 				}
 				
 			}
@@ -166,10 +161,12 @@ class AnimatedSprite extends Sprite {
 			// This is the number of ms we have been in this animation
 			var timeInAnimation:Int = timeElapsed % loopTime;
 			// The raw frame index is the number of frames we have had time to show
-			var rawFrameIndex:Int = Math.round(timeInAnimation / frameDuration);
+			var currentFrameIndex:Int = Std.int(timeInAnimation / frameDuration);
 			// Make sure we loop correctly
-			currentFrameIndex = rawFrameIndex % frameCount;
-			
+		  if (currentFrameIndex >= frameCount) {
+			  currentFrameIndex = frameCount - 1;
+			}
+
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 			
 			isAFrameShown = true;
