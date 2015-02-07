@@ -55,6 +55,11 @@ class BehaviorData {
 		return new BehaviorData ("behavior" + (uniqueID++), frames.copy (), loop, frameRate, originX, originY);
 		
 	}
-	
+
+  public function reverse():BehaviorData {
+	  var nFrames = frames.copy();
+		nFrames.reverse();
+		return new BehaviorData (name + "Reverse", nFrames, loop, frameRate, originX, originY);
+	}
 	
 }
