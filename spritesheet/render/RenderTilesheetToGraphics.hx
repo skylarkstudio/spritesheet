@@ -21,8 +21,7 @@ import spritesheet.AnimatedSprite;
         tileData.push(sprite.transform.colorTransform.redMultiplier);
         tileData.push(sprite.transform.colorTransform.greenMultiplier);
         tileData.push(sprite.transform.colorTransform.blueMultiplier);
-        tileData.push(sprite.transform.colorTransform.alphaMultiplier);
-        usedFlags |= Tilesheet.TILE_RGB | Tilesheet.TILE_ALPHA;
+        usedFlags |= Tilesheet.TILE_RGB;
       }
       tilesheet.drawTiles(sprite.graphics,tileData, smoothing, usedFlags);
     }
