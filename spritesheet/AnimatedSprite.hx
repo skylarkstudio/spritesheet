@@ -161,7 +161,7 @@ class AnimatedSprite extends Sprite {
 			// This is the number of ms we have been in this animation
 			var timeInAnimation:Int = timeElapsed % loopTime;
 			// The raw frame index is the number of frames we have had time to show
-			var currentFrameIndex:Int = Std.int(timeInAnimation / frameDuration);
+			currentFrameIndex = Std.int(timeInAnimation / frameDuration);
 			// Make sure we loop correctly
 		  if (currentFrameIndex >= frameCount) {
 			  currentFrameIndex = frameCount - 1;
