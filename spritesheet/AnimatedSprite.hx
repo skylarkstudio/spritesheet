@@ -54,7 +54,6 @@ class AnimatedSprite extends Sprite {
 		}
 	}
 	
-	
 	public function getFrameData (index:Int):Dynamic {
 		
 		if (currentBehavior != null && currentBehavior.frameData.length > index) {
@@ -207,11 +206,7 @@ class AnimatedSprite extends Sprite {
 				
 				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
 				
-				if (!isAFrameShown) {
-					
-					update (0);
-					
-				}
+				update (0);
 				
 			}
 			
