@@ -119,8 +119,11 @@ class AnimatedSprite extends Sprite {
 		
 	}
 	
-	
-	public function update (deltaTime:Int):Void {
+	/**
+	 * 
+	 * @return behaviorComplete, the animation is finished
+	 */
+	public function update (deltaTime:Int):Bool {
 		
 		if (!behaviorComplete) {
 			
@@ -138,24 +141,16 @@ class AnimatedSprite extends Sprite {
 					
 					behaviorComplete = true;
 					ratio = 1;
-					
 				}
 				
 			}
 			
-			// Number of frames in the animation
-			var frameCount = currentBehavior.frames.length;
-			// Duration in ms of a single frame
-			var frameDuration:Int = Math.round(loopTime / frameCount);
-			// This is the number of ms we have been in this animation
-			var timeInAnimation:Int = timeElapsed % loopTime;
-			// The raw frame index is the number of frames we have had time to show
-			var rawFrameIndex:Int = Math.round(timeInAnimation / frameDuration);
-			// Make sure we loop correctly
-			currentFrameIndex = rawFrameIndex % frameCount;
+			if (ratio >= 1)
+				currentFrameIndex  = (currentBehavior.frames.length - 1);
+			else
+				currentFrameIndex = Math.floor (ratio * currentBehavior.frames.length);
 			
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
-			
 			
 			bitmap.bitmapData = frame.bitmapData;
 			bitmap.smoothing = smoothing;
@@ -178,6 +173,7 @@ class AnimatedSprite extends Sprite {
 			
 		}
 		
+		return behaviorComplete;
 	}
 	
 	
