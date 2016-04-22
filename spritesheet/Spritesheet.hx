@@ -94,6 +94,29 @@ class Spritesheet {
 		
 		frame.bitmapData = bitmapData;
 		
+		var hasGeneratedAllFrames = true;
+		for (i in 0...totalFrames) {
+			
+			if ( frames[i].bitmapData == null )
+			{
+				
+				hasGeneratedAllFrames = false;
+				break;
+				
+			}
+			
+		}
+		
+		if ( hasGeneratedAllFrames ) {
+			
+			// We've generated all frames, don't need to keep the original spritesheet anymore.
+			// Should not break merge() or updateImage() or similar.
+			//trace( "Spritesheet.generateBitmap: all frames generated, evicting source." );
+			sourceImage = null;
+			sourceImageAlpha = null;
+			
+		}
+		
 	}
 	
 	
