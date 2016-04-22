@@ -80,19 +80,34 @@ class Spritesheet {
 		
 		var frame = frames[index];
 		
-		var bitmapData = new BitmapData (frame.width, frame.height, true);
-		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
-		var targetPoint = new Point ();
-		
-		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
-		
-		if (sourceImageAlpha != null) {
+		if ( ( frame.x == 0 ) &&
+		     ( frame.y == 0 ) &&
+		     ( frame.width == sourceImage.width ) &&
+		     ( frame.height == sourceImage.height ) &&
+		     ( sourceImageAlpha == null ) ) {
 			
-			bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+			// This is the full source image, and no alpha needs to be merged in;
+			// just reference directly.
+			//trace( "Spritesheet.generateBitmap: full sheet reused for " + name + " frame " + index );
+			frame.bitmapData = sourceImage;
+			
+		} else {
+			
+			var bitmapData = new BitmapData (frame.width, frame.height, true);
+			var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
+			var targetPoint = new Point ();
+			
+			bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
+			
+			if (sourceImageAlpha != null) {
+				
+				bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+				
+			}
+			
+			frame.bitmapData = bitmapData;
 			
 		}
-		
-		frame.bitmapData = bitmapData;
 		
 	}
 	
