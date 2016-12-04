@@ -2,7 +2,7 @@ package spritesheet;
 
 
 import flash.display.BitmapData;
-import openfl.display.Tilesheet;
+import openfl.display.Tilemap;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import spritesheet.data.BehaviorData;
@@ -10,13 +10,13 @@ import spritesheet.data.SpritesheetFrame;
 
 private enum ImageData {
   BITMAP_DATA(sourceImage : BitmapData, sourceImageAlpha : BitmapData);
-  TILESHEET(sheet : openfl.display.Tilesheet); 
+  TILESHEET(sheet : openfl.display.Tilemap); 
 }
 
 enum StorageType {
   INDIVIDUAL_BITMAPS;// Store every frame in its own BITMAP_DATA
   SINGLE_BITMAP;     // Store all frames in onw single bitmap
-  TILESHEET;         // Store using openfl.display.Tilesheet
+  TILESHEET;         // Store using openfl.display.Tilemap
 }
 
 class Spritesheet {
@@ -37,14 +37,14 @@ class Spritesheet {
 
         if (storageType == null) {
         #if flash
-            storageType = INDIVIDUAL_BITMAPS; //Tilesheet does not work with blendmode = ADD on flash
+            storageType = INDIVIDUAL_BITMAPS; //Tilemap does not work with blendmode = ADD on flash
         #else
             storageType = TILESHEET; //Only tilesheets work for blendmode = ADD on other targets
         #end
         }
 
 		if (storageType == TILESHEET) {
-			this.imageData = TILESHEET(new Tilesheet(image));
+			this.imageData = TILESHEET(new Tilemap(image));
 			this.useSingleBitmapData = true;
 		} else {
 			this.imageData = BITMAP_DATA(image, imageAlpha);
