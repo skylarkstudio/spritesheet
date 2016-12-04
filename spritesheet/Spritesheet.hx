@@ -2,11 +2,22 @@ package spritesheet;
 
 
 import flash.display.BitmapData;
+import openfl.display.Tilemap;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import spritesheet.data.BehaviorData;
 import spritesheet.data.SpritesheetFrame;
 
+private enum ImageData {
+  BITMAP_DATA(sourceImage : BitmapData, sourceImageAlpha : BitmapData);
+  TILESHEET(sheet : openfl.display.Tilemap); 
+}
+
+enum StorageType {
+  INDIVIDUAL_BITMAPS;// Store every frame in its own BITMAP_DATA
+  SINGLE_BITMAP;     // Store all frames in onw single bitmap
+  TILESHEET;         // Store using openfl.display.Tilemap
+}
 
 class Spritesheet {
 	
@@ -16,14 +27,29 @@ class Spritesheet {
 	public var totalFrames:Int;
 	
 	private var frames:Array <SpritesheetFrame>;
+	private var imageData : ImageData;
 	private var sourceImage:BitmapData;
 	private var sourceImageAlpha:BitmapData;
+	public var useSingleBitmapData(default,null):Bool;
 	
-	
-	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
-		
-		this.sourceImage = image;
-		this.sourceImageAlpha = imageAlpha;
+	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null,
+						 imageAlpha:BitmapData = null, storageType : StorageType = null) {
+
+        if (storageType == null) {
+        #if flash
+            storageType = INDIVIDUAL_BITMAPS; //Tilemap does not work with blendmode = ADD on flash
+        #else
+            storageType = TILESHEET; //Only tilesheets work for blendmode = ADD on other targets
+        #end
+        }
+
+		if (storageType == TILESHEET) {
+			this.imageData = TILESHEET(new Tilemap(image));
+			this.useSingleBitmapData = true;
+		} else {
+			this.imageData = BITMAP_DATA(image, imageAlpha);
+			this.useSingleBitmapData = storageType == SINGLE_BITMAP;
+		}
 		
 		if (frames == null) {
 			
@@ -45,6 +71,12 @@ class Spritesheet {
 			
 			this.behaviors = behaviors;
 			
+		}
+
+		if (useSingleBitmapData && imageAlpha != null) {
+			var targetRect = new Rectangle(0,0,image.width,image.height);
+			var targetPoint = new Point();
+			image.copyChannel (imageAlpha, targetRect, targetPoint, 2, 8);
 		}
 		
 	}
@@ -80,20 +112,25 @@ class Spritesheet {
 		
 		var frame = frames[index];
 		
-		var bitmapData = new BitmapData (frame.width, frame.height, true);
 		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
 		var targetPoint = new Point ();
 		
-		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
-		
-		if (sourceImageAlpha != null) {
-			
-			bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
-			
+		switch(imageData) {
+			case BITMAP_DATA(sourceImage, sourceImageAlpha):
+			if (useSingleBitmapData) {
+				frame.bitmapData = sourceImage;
+			} else {
+				var bitmapData = new BitmapData (frame.width, frame.height, true);
+				bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
+
+				if (sourceImageAlpha != null) {
+					bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+				}
+				frame.bitmapData = bitmapData;
+			}
+			case TILESHEET(sheet):
+			frame.tilesheetIndex = sheet.addTileRect(sourceRectangle, new Point(0,0));
 		}
-		
-		frame.bitmapData = bitmapData;
-		
 	}
 	
 	
