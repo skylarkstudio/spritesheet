@@ -1,11 +1,9 @@
 package spritesheet.data;
 
-import openfl.geom.Rectangle;
 
 
 class SpritesheetFrame {
 	public var id(default, default):Int;
-	public var rect(default, default):Rectangle;
 
 	public var height:Int;
 	public var offsetX:Int;

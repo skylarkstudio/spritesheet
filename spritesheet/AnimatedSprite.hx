@@ -10,7 +10,7 @@ import spritesheet.data.BehaviorData;
 class AnimatedSprite extends Sprite {
 	public var tilemap(default, null):Tilemap;
 	public var tile(default, null):Tile;
-	
+
 	public var currentBehavior:BehaviorData;
 	public var currentFrameIndex:Int;
 	public var smoothing:Bool;
@@ -158,7 +158,6 @@ class AnimatedSprite extends Sprite {
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 
 			this.tile.id = frame.id;
-			this.tile.rect = frame.rect;
 			this.tile.x = frame.offsetX - currentBehavior.originX;
 			this.tile.y = frame.offsetY - currentBehavior.originY;
 
@@ -195,7 +194,7 @@ class AnimatedSprite extends Sprite {
 			}
 			
 		} else {
-			
+
 			currentBehavior = null;
 			currentFrameIndex = -1;
 			behaviorComplete = true;
