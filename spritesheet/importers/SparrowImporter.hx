@@ -73,8 +73,7 @@ class SparrowImporter {
 		
 		var spriteSheetNodeFast = new Fast (spriteSheetNode);
 		var spriteSheet = new Spritesheet (frames, behaviors);
-		spriteSheet.updateImage (Assets.getBitmapData (assetDirectory + "/" + spriteSheetNodeFast.att.imagePath));
-		
+
 		return spriteSheet;
 		
 	}

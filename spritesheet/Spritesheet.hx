@@ -1,9 +1,7 @@
 package spritesheet;
 
-
+import openfl.display.Tileset;
 import flash.display.BitmapData;
-import flash.geom.Point;
-import flash.geom.Rectangle;
 import spritesheet.data.BehaviorData;
 import spritesheet.data.SpritesheetFrame;
 
@@ -16,24 +14,37 @@ class Spritesheet {
 	public var totalFrames:Int;
 	
 	private var frames:Array <SpritesheetFrame>;
-	private var sourceImage:BitmapData;
-	private var sourceImageAlpha:BitmapData;
+
+	public var width(default, null):Int;
+	public var height(default, null):Int;
+
+	public var tileset(default, null):Tileset;
 	
-	
-	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
-		
-		this.sourceImage = image;
-		this.sourceImageAlpha = imageAlpha;
-		
+	public function new (tileset:Tileset = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
+		this.tileset = tileset;
+
 		if (frames == null) {
 			
 			this.frames = new Array <SpritesheetFrame> ();
 			totalFrames = 0;
+
+			width = 0;
+			height = 0;
 			
 		} else {
 			
 			this.frames = frames;
 			totalFrames = frames.length;
+
+			for (frame in this.frames) {
+				if (null == width || frame.width > width) {
+					width = frame.width;
+				}
+
+				if (null == height || frame.height > height) {
+					height = frame.height;
+				}
+			}
 			
 		}
 		
@@ -61,76 +72,36 @@ class Spritesheet {
 		
 		frames.push (frame);
 		totalFrames ++;
-		
-	}
-	
-	
-	public function generateBitmaps ():Void {
-		
-		for (i in 0...totalFrames) {
-			
-			generateBitmap (i);
-			
+
+		if (frame.width > width) {
+			width = frame.width;
 		}
-		
-	}
-	
-	
-	public function generateBitmap (index:Int):Void {
-		
-		var frame = frames[index];
-		
-		var bitmapData = new BitmapData (frame.width, frame.height, true);
-		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
-		var targetPoint = new Point ();
-		
-		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
-		
-		if (sourceImageAlpha != null) {
-			
-			bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
-			
+
+		if (frame.height > height) {
+			height = frame.height;
 		}
-		
-		frame.bitmapData = bitmapData;
-		
 	}
-	
 	
 	public function getFrame (index:Int, autoGenerate:Bool = true):SpritesheetFrame {
 		
-		var frame = frames[index];
-		
-		if (frame != null && frame.bitmapData == null && autoGenerate) {
-			
-			generateBitmap (index);
-			
-		}
-		
-		return frame;
+		return frames[index];
 		
 	}
 	
 
-	public function getFrameByName(frameName:String, autoGenerate:Bool = true):SpritesheetFrame {
+	public function getFrameById(frameId:Int, autoGenerate:Bool = true):SpritesheetFrame {
 
 			var frameIndex:Int = 0;
 			var frame:SpritesheetFrame = null;
 
 			for (index in 0...totalFrames) {
 
-					if (frames[index].name==frameName) {
+					if (frames[index].id==frameId) {
 							frameIndex = index;
 							frame = frames[index];
 							break;
 					}
 
-			}
-
-			if (frame != null && frame.bitmapData == null && autoGenerate) {
-					
-					generateBitmap (frameIndex);
-					
 			}
 
 			return frame;
@@ -164,13 +135,7 @@ class Spritesheet {
 		var cacheTotalFrames = totalFrames;
 		
 		for (i in 0...spritesheet.frames.length) {
-			
-			if (spritesheet.frames[i].bitmapData == null && (spritesheet.sourceImage != sourceImage || spritesheet.sourceImageAlpha != sourceImageAlpha)) {
-				
-				spritesheet.generateBitmap (i);
-				
-			}
-			
+
 			addFrame (spritesheet.frames[i]);
 			
 		}
@@ -205,24 +170,5 @@ class Spritesheet {
 		return ids;
 		
 	}
-	
-	
-	public function updateImage (image:BitmapData, imageAlpha:BitmapData = null):Void {
-		
-		sourceImage = image;
-		sourceImageAlpha = imageAlpha;
-		
-		for (frame in frames) {
-			
-			if (frame.bitmapData != null) {
-				
-				frame.bitmapData = null;
-				
-			}
-			
-		}
-		
-	}
-	
-	
+
 }

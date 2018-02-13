@@ -1,14 +1,12 @@
 package spritesheet.data;
 
-
-import flash.display.BitmapData;
+import openfl.geom.Rectangle;
 
 
 class SpritesheetFrame {
-	
-	
-	public var name:String;
-	public var bitmapData:BitmapData;
+	public var id(default, default):Int;
+	public var rect(default, default):Rectangle;
+
 	public var height:Int;
 	public var offsetX:Int;
 	public var offsetY:Int;
