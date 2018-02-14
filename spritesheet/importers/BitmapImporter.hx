@@ -1,10 +1,8 @@
 package spritesheet.importers;
 
 
-import flash.display.Bitmap;
+import openfl.display.Tileset;
 import flash.display.BitmapData;
-import flash.geom.Matrix;
-import flash.geom.Point;
 import flash.geom.Rectangle;
 import spritesheet.data.SpritesheetFrame;
 import spritesheet.Spritesheet;
@@ -13,9 +11,10 @@ import spritesheet.Spritesheet;
 class BitmapImporter {
 	
 	
-	public static function create (bitmapData:BitmapData, columns:Int, rows:Int, tileWidth:Int, tileHeight:Int, adjustLength:Int = 0, scale:Float = 1):Spritesheet {
+	public static function create (bitmapData:BitmapData, columns:Int, rows:Int, tileWidth:Int, tileHeight:Int, adjustLength:Int = 0):Spritesheet {
 		
 		var frames = [];
+		var rects = new Array<Rectangle>();
 		var totalLength = rows * columns + adjustLength;
 		
 		for (row in 0...rows) {
@@ -27,25 +26,10 @@ class BitmapImporter {
 					var x = tileWidth * column;
 					var y = tileHeight * row;
 					var frame = new SpritesheetFrame (x, y, tileWidth, tileHeight, 0, 0);
-					
-					if (scale != 1) {
-						
-						var sourceBitmapData = new BitmapData (tileWidth, tileHeight, true, 0x00000000);
-						sourceBitmapData.copyPixels (bitmapData, new Rectangle (x, y, tileWidth, tileHeight), new Point ());
-						
-						var bitmap = new Bitmap (sourceBitmapData);
-						bitmap.smoothing = true;
-						
-						var matrix = new Matrix ();
-						matrix.scale (scale, scale);
-						
-						var bitmapData = new BitmapData (Math.round (tileWidth * scale), Math.round (tileHeight * scale), true, 0x0);
-						bitmapData.draw (bitmap, matrix);
-						frame.bitmapData = bitmapData;
-						
-					}
-					
+					frame.id = column + row;
+
 					frames.push (frame);
+					rects.push(new Rectangle(x, y, tileWidth, tileHeight));
 					
 				}
 				
@@ -59,7 +43,7 @@ class BitmapImporter {
 			
 		}
 		
-		return new Spritesheet (bitmapData, frames);
+		return new Spritesheet (new Tileset(bitmapData, rects), frames);
 		
 	}
 	
