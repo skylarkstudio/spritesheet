@@ -1,5 +1,7 @@
 package spritesheet.importers;
 
+import openfl.display.Tileset;
+import openfl.geom.Rectangle;
 import spritesheet.data.BehaviorData;
 import haxe.ds.StringMap;
 import spritesheet.data.SpritesheetFrame;
@@ -91,6 +93,7 @@ class TexturePackerImporter {
     {
         var allFrames = new Array<SpritesheetFrame>();
         var allBehaviors = new Map <String, BehaviorData>();
+        var allRects = new Array<Rectangle>();
 
         for (key in behaviorNames.keys()) {
 
@@ -101,6 +104,7 @@ class TexturePackerImporter {
 
                 var tpFrame:TPFrame = frames[i];
                 var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h );
+                sFrame.id = i;
 
                 if( tpFrame.trimmed )
                 {
@@ -112,6 +116,7 @@ class TexturePackerImporter {
 
                 indexes.push(allFrames.length);
                 allFrames.push(sFrame);
+                allRects.push(new Rectangle(tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h));
             }
 
             if( isIgnoredBehavior(key) )
@@ -123,7 +128,7 @@ class TexturePackerImporter {
 
         }
 
-        return new Spritesheet( bitmapData, allFrames, allBehaviors );
+        return new Spritesheet( new Tileset(bitmapData, allRects), allFrames, allBehaviors );
 
     }
 

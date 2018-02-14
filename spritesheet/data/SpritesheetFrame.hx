@@ -1,14 +1,10 @@
 package spritesheet.data;
 
 
-import flash.display.BitmapData;
-
 
 class SpritesheetFrame {
-	
-	
-	public var name:String;
-	public var bitmapData:BitmapData;
+	public var id(default, default):Int;
+
 	public var height:Int;
 	public var offsetX:Int;
 	public var offsetY:Int;

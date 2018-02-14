@@ -1,18 +1,16 @@
 package spritesheet;
 
-
-import flash.display.Bitmap;
-import flash.display.BitmapData;
+import openfl.display.Tile;
+import openfl.display.Tilemap;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.Lib;
 import spritesheet.data.BehaviorData;
 
 
 class AnimatedSprite extends Sprite {
-	
-	
-	public var bitmap:Bitmap;
+	public var tilemap(default, null):Tilemap;
+	public var tile(default, null):Tile;
+
 	public var currentBehavior:BehaviorData;
 	public var currentFrameIndex:Int;
 	public var smoothing:Bool;
@@ -33,8 +31,11 @@ class AnimatedSprite extends Sprite {
 		this.spritesheet = sheet;
 		
 		behaviorQueue = new Array <BehaviorData> ();
-		bitmap = new Bitmap ();
-		addChild (bitmap);
+
+		this.tilemap = new Tilemap(sheet.width, sheet.height, sheet.tileset, smoothing);
+		this.tilemap.addTile(this.tile = new Tile());
+
+		addChild (this.tilemap);
 		
 	}
 	
@@ -155,13 +156,11 @@ class AnimatedSprite extends Sprite {
 			currentFrameIndex = rawFrameIndex % frameCount;
 			
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
-			
-			
-			bitmap.bitmapData = frame.bitmapData;
-			bitmap.smoothing = smoothing;
-			bitmap.x = frame.offsetX - currentBehavior.originX;
-			bitmap.y = frame.offsetY - currentBehavior.originY;
-			
+
+			this.tile.id = frame.id;
+			this.tile.x = frame.offsetX - currentBehavior.originX;
+			this.tile.y = frame.offsetY - currentBehavior.originY;
+
 			if (behaviorComplete) {
 				
 				if (behaviorQueue.length > 0) {
@@ -192,18 +191,10 @@ class AnimatedSprite extends Sprite {
 				behaviorComplete = false;
 				
 				loopTime = Std.int ((behavior.frames.length / behavior.frameRate) * 1000);
-				
-				if (bitmap.bitmapData == null) {
-					
-					update (0);
-					
-				}
-				
 			}
 			
 		} else {
-			
-			bitmap.bitmapData = null;
+
 			currentBehavior = null;
 			currentFrameIndex = -1;
 			behaviorComplete = true;
