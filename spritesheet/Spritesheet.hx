@@ -15,8 +15,8 @@ class Spritesheet {
 	
 	private var frames:Array <SpritesheetFrame>;
 
-	public var width(default, null):Int;
-	public var height(default, null):Int;
+	public var width = 0;
+	public var height = 0;
 
 	public var tileset(default, null):Tileset;
 	
@@ -37,11 +37,11 @@ class Spritesheet {
 			totalFrames = frames.length;
 
 			for (frame in this.frames) {
-				if (null == width || frame.width > width) {
+				if (width == 0 || frame.width > width) {
 					width = frame.width;
 				}
 
-				if (null == height || frame.height > height) {
+				if (height == 0 || frame.height > height) {
 					height = frame.height;
 				}
 			}
