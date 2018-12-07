@@ -4,8 +4,8 @@
   "license": "MIT",
   "tags": [],
   "description": "Spritesheet is a useful and flexible sprite sheet library compatible with OpenFL",
-  "version": "1.2.0",
-  "releasenote": "Update for Haxe 3",
-  "contributors": [ "singmajesty", "infinite" ],
+  "version": "1.2.1",
+  "releasenote": "Moving example project to spritesheet-samples",
+  "contributors": [ "singmajesty", "haysclark" ],
   "dependencies": {}
 }
