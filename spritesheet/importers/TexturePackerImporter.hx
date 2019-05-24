@@ -95,6 +95,8 @@ class TexturePackerImporter {
         var allBehaviors = new Map <String, BehaviorData>();
         var allRects = new Array<Rectangle>();
 
+		var frameId:Int = 0;
+		
         for (key in behaviorNames.keys()) {
 
             var indexes = new Array<Int>();
@@ -104,7 +106,7 @@ class TexturePackerImporter {
 
                 var tpFrame:TPFrame = frames[i];
                 var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h );
-                sFrame.id = i;
+                sFrame.id = frameId++;
 
                 if( tpFrame.trimmed )
                 {

@@ -129,7 +129,18 @@ class AnimatedSprite extends Sprite {
 			
 			var ratio = timeElapsed / loopTime;
 			
-			if (ratio >= 1) {
+			// Number of frames in the animation
+			var frameCount = currentBehavior.frames.length;
+			// Duration in ms of a single frame
+			var frameDuration:Int = Math.floor(loopTime / frameCount);
+			// This is the number of ms we have been in this animation
+			var timeInAnimation:Int = timeElapsed % loopTime;
+			// The raw frame index is the number of frames we have had time to show
+			var rawFrameIndex:Int = Math.floor(timeInAnimation / frameDuration);
+			// Make sure we loop correctly
+			currentFrameIndex = rawFrameIndex % frameCount;
+			
+			if (ratio >= 1 || currentFrameIndex >= (frameCount-1)) {
 				
 				if (currentBehavior.loop) {
 					
@@ -143,17 +154,6 @@ class AnimatedSprite extends Sprite {
 				}
 				
 			}
-			
-			// Number of frames in the animation
-			var frameCount = currentBehavior.frames.length;
-			// Duration in ms of a single frame
-			var frameDuration:Int = Math.round(loopTime / frameCount);
-			// This is the number of ms we have been in this animation
-			var timeInAnimation:Int = timeElapsed % loopTime;
-			// The raw frame index is the number of frames we have had time to show
-			var rawFrameIndex:Int = Math.round(timeInAnimation / frameDuration);
-			// Make sure we loop correctly
-			currentFrameIndex = rawFrameIndex % frameCount;
 			
 			var frame = spritesheet.getFrame (currentBehavior.frames [currentFrameIndex]);
 
