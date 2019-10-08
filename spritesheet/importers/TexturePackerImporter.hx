@@ -103,7 +103,11 @@ class TexturePackerImporter {
             for (i in 0...frames.length) {
 
                 var tpFrame:TPFrame = frames[i];
-                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h );
+
+                var w:Int = tpFrame.rotated ? tpFrame.frame.h : tpFrame.frame.w;
+                var h:Int = tpFrame.rotated ? tpFrame.frame.w : tpFrame.frame.h;
+
+                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, w, h );
                 sFrame.id = i;
 
                 if( tpFrame.trimmed )
@@ -116,7 +120,7 @@ class TexturePackerImporter {
 
                 indexes.push(allFrames.length);
                 allFrames.push(sFrame);
-                allRects.push(new Rectangle(tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h));
+                allRects.push(new Rectangle(tpFrame.frame.x, tpFrame.frame.y, w, h));
             }
 
             if( isIgnoredBehavior(key) )
