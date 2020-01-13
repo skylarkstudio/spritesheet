@@ -17,10 +17,32 @@ class TexturePackerImporter {
     public function parse(path:String, bitmapData:BitmapData, exp:EReg = null):Spritesheet {
 
         var json = Json.parse(path);
+        if (!Std.is(json.frames, Array))
+        {
+            trace("Converting json frames map to array...");
+            json = convertFramesToArray(json);
+        }
+
         var tpFrames:Array<TPFrame> = parseJsonFrames(json);
         var behaviorNames = buildBehaviorMap(tpFrames, exp);
         return generateSpriteSheetForBehaviors(bitmapData, behaviorNames);
+    }
 
+    private function convertFramesToArray(json:Dynamic):Dynamic
+    {
+        var newJson:Dynamic = {
+            frames: [],
+            meta: json.meta
+        };
+
+        for (field in Reflect.fields(json.frames))
+        {
+            var frame:Dynamic = Reflect.field(json.frames, field);
+            frame.filename = field;
+            newJson.frames.push(frame);
+        }
+
+        return newJson;
     }
 
     public function parseJsonFrames(json:Dynamic):Array<TPFrame> {
@@ -72,6 +94,8 @@ class TexturePackerImporter {
         exp = (exp == null) ? ~// : exp;
         var nameMap = new StringMap<Array<TPFrame>>();
 
+        var count:Int = 0;
+
         for (frame in frames) {
 
             exp.match(frame.filename);
@@ -79,11 +103,21 @@ class TexturePackerImporter {
             if (!nameMap.exists(behaviorName)) {
 
                 nameMap.set(behaviorName, new Array<TPFrame>());
-
+                count++;
             }
 
             var behaviors:Array<TPFrame> = nameMap.get(behaviorName);
             behaviors.push(frame);
+        }
+
+        if (count == 1)
+        {
+            var behaviorName:String = "default";
+            nameMap.set(behaviorName, new Array<TPFrame>());
+
+            for (frame in frames) {
+                nameMap.get(behaviorName).push(frame);
+            }
         }
 
         return nameMap;
@@ -103,7 +137,11 @@ class TexturePackerImporter {
             for (i in 0...frames.length) {
 
                 var tpFrame:TPFrame = frames[i];
-                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h );
+
+                var w:Int = tpFrame.rotated ? tpFrame.frame.h : tpFrame.frame.w;
+                var h:Int = tpFrame.rotated ? tpFrame.frame.w : tpFrame.frame.h;
+
+                var sFrame = new SpritesheetFrame ( tpFrame.frame.x, tpFrame.frame.y, w, h );
                 sFrame.id = i;
 
                 if( tpFrame.trimmed )
@@ -116,7 +154,7 @@ class TexturePackerImporter {
 
                 indexes.push(allFrames.length);
                 allFrames.push(sFrame);
-                allRects.push(new Rectangle(tpFrame.frame.x, tpFrame.frame.y, tpFrame.frame.w, tpFrame.frame.h));
+                allRects.push(new Rectangle(tpFrame.frame.x, tpFrame.frame.y, w, h));
             }
 
             if( isIgnoredBehavior(key) )
